@@ -5,6 +5,12 @@
 
 A beautiful RTL user panel template for Marzban/Marzneshin services with dynamic configuration. Inspired by [Marzbanify Template](https://github.com/dermv/marzbanify-template)
 
+[![License](https://img.shields.io/github/license/rezazoom/qoqnoos-template?style=for-the-badge&color=blue)](https://github.com/rezazoom/qoqnoos-template/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/rezazoom/qoqnoos-template?style=for-the-badge&color=yellow)](https://github.com/rezazoom/qoqnoos-template/stargazers)
+[![Forks](https://img.shields.io/github/forks/rezazoom/qoqnoos-template?style=for-the-badge&color=green)](https://github.com/rezazoom/qoqnoos-template/network/members)
+[![Issues](https://img.shields.io/github/issues/rezazoom/qoqnoos-template?style=for-the-badge)](https://github.com/rezazoom/qoqnoos-template/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/rezazoom/qoqnoos-template?style=for-the-badge)](https://github.com/rezazoom/qoqnoos-template/commits/main)
+
 ## Features
 
 - 🌙 Dark mode support
