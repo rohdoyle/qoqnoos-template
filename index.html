@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-bs-theme="dark">
+
+<!--   ___                                      -->
+<!--  / _ \  ___   __ _ _ __   ___   ___  ___   -->
+<!-- | | | |/ _ \ / _` | '_ \ / _ \ / _ \/ __|  -->
+<!-- | |_| | (_) | (_| | | | | (_) | (_) \__ \  -->
+<!--  \__\_\\___/ \__, |_| |_|\___/ \___/|___/  -->
+<!-- |_   _|__ _ __ _|_| _ __ | | __ _| |_ ___  -->
+<!--   | |/ _ \ '_ ` _ \| '_ \| |/ _` | __/ _ \ -->
+<!--   | |  __/ | | | | | |_) | | (_| | ||  __/ -->
+<!--   |_|\___|_| |_| |_| .__/|_|\__,_|\__\___| -->
+<!--                    |_|                     -->
+
+<!--
+	Qoqnoos Template
+	Created by: Reza Esmaeili - REZAZOOM
+	GitHub: https://github.com/rezazoom/qoqnoos-template
+	License: MIT
+	Last Updated: 2025-07-06
+
+	A beautiful RTL user panel for Marzban/Marzneshin services with dynamic configuration.
+	Features:
+	- Responsive design
+	- Dark mode support
+	- Dynamic content loading
+	- QR code generation
+	- Persian language support
+-->
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>اطلاعات اشتراک - {{ user.username }}</title>
+	<link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font@v5.0.1/dist/font-face.css" rel="stylesheet">
+	<link href='https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+	<link rel="icon" type="image/png" sizes="16x16" href="https://placehold.co/16/1d2636/c64e69.png?text=Qo&font=Poppins">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://placehold.co/32/1d2636/c64e69.png?text=Qo&font=Poppins">
+	<link rel="icon" type="image/png" sizes="48x48" href="https://placehold.co/48/1d2636/c64e69.png?text=Qo&font=Poppins">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://placehold.co/180/1d2636/c64e69.png?text=Qo&font=Poppins">
+	<link rel="icon" sizes="192x192" href="https://placehold.co/192/1d2636/c64e69.png?text=Qo&font=Poppins">
+	<link rel="icon" sizes="512x512" href="https://placehold.co/512/1d2636/c64e69.png?text=Qo&font=Poppins">
+	<meta name="msapplication-TileImage" content="https://placehold.co/144/1d2636/c64e69.png?text=Qo&font=Poppins">
+
+	<meta name="theme-color" content="#1d2636">
+	<link rel="mask-icon" href="https://placehold.co/50/1d2636/c64e69.png?text=Qo&font=Poppins" color="#c64e69">
+
+	<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+	<style>
+        :root {
+            --primary: #c64e69;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --gray: #9ca3af;
+            --bg-dark: #111827;
+            --bg-darker: #0f172a;
+            --card-dark: #1e293bcc;
+            --text-light: #f8fafc;
+            --text-lighter: #e2e8f0;
+            --before-background-image: url("https://uploadkon.ir/uploads/d4f408_25ember.jpg");
+        }
+
+        body {
+            font-family: Shabnam, -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-lighter);
+            background-color: var(--bg-dark);
+            padding: 1rem;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: var(--before-background-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(8px) brightness(0.6);
+            z-index: -1;
+        }
+
+        .card {
+            background: var(--card-dark);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            border-radius: 0.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+
+        }
+
+        .bx {
+            font-size: 1.5rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status.active {
+            background-color: rgba(52, 211, 153, 0.1);
+            color: var(--success);
+        }
+
+        .status.limited {
+            background-color: rgba(248, 113, 113, 0.1);
+            color: var(--danger);
+        }
+
+        .status.expired {
+            background-color: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+        }
+
+        .status.disabled {
+            background-color: rgba(156, 163, 175, 0.1);
+            color: var(--gray);
+        }
+
+        .traffic-bar {
+            height: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .link-input {
+            font-family: monospace;
+            background-color: var(--bg-darker);
+            color: var(--text-lighter);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            direction: ltr;
+            text-align: left;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: #6366f1;
+            border-color: #6366f1;
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: rgba(129, 140, 248, 0.1);
+            color: var(--primary);
+        }
+
+        .qr-container {
+            background-color: #bbb;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .qr-container img {
+            border: 10px solid #fff;
+            margin: 0 auto;
+        }
+
+        .text-muted {
+            color: var(--gray) !important;
+        }
+
+        .modal-content {
+            background-color: var(--card-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(129, 140, 248, 0.1);
+            color: var(--primary);
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(129, 140, 248, 0.1);
+        }
+
+        .accordion-item {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .step-card {
+            height: 100%;
+        }
+
+        .step-number {
+            font-size: 3.5rem;
+            font-weight: bolder;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .navbar-brand img {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .bx-border {
+            border: .07em solid rgba(255, 255, 255, .15)
+        }
+
+        .list-group-item:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+
+        }
+
+	</style>
+</head>
+
+<body>
+<div class="container">
+	<!-- Navigation Bar -->
+	<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+		<div class="container-fluid">
+			<a class="navbar-brand me-auto" href="#">
+				<img id="logoImage" src="https://placehold.co/50/1d2636/c64e69.png?text=Qo&font=Poppins.png" alt="لوگو"
+				     height="50">
+				<strong id="siteName" style="color: var(--primary)" class="m-2">ققنوس سابسکریپشن</strong>
+			</a>
+
+			<div class="d-flex">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a id="supportLink" class="nav-link" href="#"><i class='bx  bx-message bx-border'></i> پشتیبانی</a>
+					</li>
+					<li class="nav-item">
+						<a id="shopLink" class="nav-link" href="#"><i class="bx bxs-shopping-bag-alt bx-border"></i>
+							فروشگاه</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#qrModal"
+						   onclick="generateCurrentPageQR()"><i class="bx bx-qr bx-border"></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="welcomeAlert" class="alert alert-dark" role="alert">
+		<h4 class="alert-heading"><i class="bx bx-message"></i><!-- Alert title will be added here --></h4>
+		<!-- Alert body will be added here -->
+	</div>
+
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+		<h4 class="fw-bold mb-0 text-white-50">جزئیات اشتراک شما</h4>
+	</div>
+	<div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+		<!-- Username Card -->
+		<div class="col">
+			<div class="card h-100">
+				<div class="card-body">
+					<div
+							class="d-flex flex-row flex-md-column align-items-center align-items-md-start mb-1 mb-md-0">
+						<i class='bx bx-user bx-border text-primary me-2 mb-0 mb-md-2'></i>
+						<h5 class="text-muted mb-0">نام کاربری</h5>
+					</div>
+					<p class="text-truncate mt-2 mb-0">{{ user.username }}</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Status Card -->
+		<div class="col">
+			<div class="card h-100">
+				<div class="card-body">
+					<div
+							class="d-flex flex-row flex-md-column align-items-center align-items-md-start mb-1 mb-md-0">
+						<i class='bx bx-smile bx-border me-2 mb-0 mb-md-2 {% if user.status.value == "active" %}text-success{% elif user.status.value == "limited" %}text-danger{% elif user.status.value == "expired" %}text-warning{% elif user.status.value == "disabled" %}text-secondary{% endif %}'></i>
+						<h5 class="text-muted mb-0">وضعیت</h5>
+					</div>
+					<p class="text-truncate mt-2 mb-0">
+							<span
+									class="status {% if user.status.value == 'active' %}active{% elif user.status.value == 'limited' %}limited{% elif user.status.value == 'expired' %}expired{% elif user.status.value == 'disabled' %}disabled{% endif %}">
+								{% if user.status.value == 'active' %}فعال{% elif user.status.value == 'limited'
+								%}محدود{% elif user.status.value == 'expired' %}منقضی{% elif user.status.value ==
+								'disabled' %}غیرفعال{% endif %}
+							</span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Expiry Date Card -->
+		<div class="col">
+			<div class="card h-100">
+				<div class="card-body">
+					<div
+							class="d-flex flex-row flex-md-column align-items-center align-items-md-start mb-1 mb-md-0">
+						<i class='bx bx-calendar bx-border text-danger me-2 mb-0 mb-md-2'></i>
+						<h5 class="text-muted mb-0">تاریخ انقضا</h5>
+					</div>
+					<p class="text-truncate mt-2 mb-0">
+						{% if not user.expire %}
+						بدون انقضا
+						{% else %}
+						{% set current_timestamp = now().timestamp() %}
+						{% set remaining_days = ((user.expire - current_timestamp) // (24 * 3600)) %}
+						{{ remaining_days | int }} روز باقی مانده
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Traffic Card -->
+		<div class="col">
+			<div class="card h-100">
+				<div class="card-body">
+					<div
+							class="d-flex flex-row flex-md-column align-items-center align-items-md-start mb-1 mb-md-0">
+						<i class='bx bx-transfer bx-border text-warning me-2 mb-0 mb-md-2'></i>
+						<h5 class="text-muted mb-0">حجم مصرفی</h5>
+					</div>
+					<p class="text-truncate mt-2 mb-0">
+						{% if not user.data_limit %}
+						نامحدود
+						{% else %}
+						{{ user.used_traffic | bytesformat }} از {{ user.data_limit | bytesformat }}
+						{% endif %}
+					</p>
+					{% if user.data_limit %}
+					<div class="progress mt-2 traffic-bar" style="height: 5px;">
+						<div class="progress-bar" role="progressbar"
+						     style="width: {{ (user.used_traffic / user.data_limit * 100) | round(1) }}%; background-color: var(--primary);"
+						     aria-valuenow="{{ (user.used_traffic / user.data_limit * 100) | round(1) }}"
+						     aria-valuemin="0" aria-valuemax="100"></div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% if user.status.value == 'active' %}
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+		<h4 class="fw-bold mb-0 text-white-50">راهنمای راه‌اندازی</h4>
+	</div>
+	<!-- Instruction Cards -->
+	<div class="row g-4 mb-4">
+		<div class="col-md-4">
+			<div class="card step-card">
+				<div class="card-body">
+					<div class="step-number">۱</div>
+					<h3 class="step-title">نصب و راه‌اندازی نرم‌افزار</h3>
+					<p>این یک لینک اشتراک هوشمند است، برای شروع ارتباط نیاز است که یک نرم‌افزار با هستهٔ xray یا
+						singbox با قابلیت اضافه کردن لینک اشتراک روی دستگاه خود نصب کنید.</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card step-card">
+				<div class="card-body">
+					<div class="step-number">۲</div>
+					<h3 class="step-title">افزودن اشتراک</h3>
+					<p>لینک این صفحه را کپی کرده، در قسمت مربوط به «افزودن اشتراک از طریق لینک» بچسبانید.</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card step-card">
+				<div class="card-body">
+					<div class="step-number">۳</div>
+					<h3 class="step-title">اتصال و لذت بردن</h3>
+					<p>بعداز راه‌اندازی و دریافت لیست سرورها توسط نرم‌افزار شما، اکنون می‌توانید به سرویس پر سرعت
+						خود متصل شوید.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="additionalLinks">
+		<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+			<h4 class="fw-bold mb-0 text-white-50">لینک‌های کمکی</h4>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<div class="accordion" id="linksAccordion">
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="linksHeading">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+							        data-bs-target="#linksCollapse" aria-expanded="false" aria-controls="linksCollapse">
+								<i class="bx bx-link bx-border me-2"></i>
+								لینک‌های اتصال تکی
+							</button>
+						</h2>
+						<div id="linksCollapse" class="accordion-collapse collapse" aria-labelledby="linksHeading"
+						     data-bs-parent="#linksAccordion">
+							<div class="accordion-body p-0">
+								<div class='alert alert-warning m-3'><b>توجه: </b>برای اتصال غیر هوشمند و اضافه کردن
+									دستی
+									کانفیگ‌ها
+									می‌توانید از لینک‌های اتصال تکی زیر در نرم‌افزار کلاینت وی‌پی‌ان نصب شده روی
+									دستگاه‌تان
+									استفاده کنید
+								</div>
+								<div class="list-group">
+									{% for link in user.links %}
+									<div
+											class="list-group-item bg-transparent border-secondary d-flex flex-column flex-md-row align-items-md-center gap-2 m-3">
+										<div class="input-group">
+											<input type="text" class="form-control link-input" value="{{ link }}"
+											       readonly>
+											<button class="btn btn-primary copy-button"
+											        onclick="copyLink('{{ link }}', this)"><i class="bx bx-copy"></i>
+											</button>
+											<button class="btn btn-outline-primary qr-button" data-bs-toggle="modal"
+											        data-bs-target="#qrModal" data-link="{{ link }}"><i
+													class="bx bx-qr"></i></button>
+										</div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+
+						</div>
+						<div class="accordion-item mt-3">
+							<h2 class="accordion-header" id="downloadHeading">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+								        data-bs-target="#downloadCollapse" aria-expanded="false"
+								        aria-controls="downloadCollapse">
+									<i class='bx bx-cloud-download bx-border me-2'></i>
+									دانلود برنامه‌ها
+								</button>
+							</h2>
+							<div id="downloadCollapse" class="accordion-collapse collapse"
+							     aria-labelledby="downloadHeading"
+							     data-bs-parent="#linksAccordion">
+								<div class="accordion-body">
+									<p class="alert alert-primary mb-3">با توجه به سیستم عامل دستگاه‌تان برنامه مورد نظر
+										را
+										دانلود کنید موارد علامت دار (*) توصیه شده هستند.</p>
+
+									<div id="downloadLinksContainer" class="list-group">
+										<!-- Download links will be inserted here by JavaScript -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	{% endif %}
+	<!-- Copyright Notice -->
+	<div class="mt-5 pt-4 text-center text-muted small border-top border-dark">
+		<div class="mb-2">
+			<i class='bx bx-code-alt'></i>  برنامه‌نویسی شده با
+			<i class='bx bxs-heart text-danger'></i>
+			در ایران
+		</div>
+	</div>
+
+</div>
+
+<!-- QR Code Modal -->
+<div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content qr-container">
+			<div class="modal-header border-0">
+				<h5 class="modal-title">اسکن کیو آر کد</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center">
+				<div id="qrCodeContainer" class="my-3"></div>
+				<h4>کد QR بالا را در کلاینت VPN خود اسکن کنید.</h4>
+				<p class="text-muted">ساده‌ترین روش افزودن اشتراک به هر کلاینتی</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Configuration variables
+    const config = {
+        siteName: "ققنوس تمپلیت",
+        logoUrl: "https://placehold.co/50/1d2636/c64e69.png?text=Qo&font=Poppins",
+        primaryColor: "#c64e69",
+        backgroundImage: "https://uploadkon.ir/uploads/d4f408_25ember.jpg",
+        supportLink: "#",
+        shopLink: "#",
+        welcomeMessage: {
+            enabled: true,
+            title: "به صفحه کاربری خودتان خوش آمدید 🌱",
+            content: "این لینک برای باز شدن در مرورگر طراحی نشده است، اما از آنجا که شما اینجا هستید، اجازه دهید اطلاعاتی درباره اشتراک‌تان به شما ارائه دهم. در زیر می‌توانید راهنمای گام به گام برای شروع استفاده از اشتراک خود را پیدا کنید."
+        },
+        additionalLinks: {
+            enabled: true
+        },
+        downloadLinks: [
+            {
+                icon: "bx bxl-apple",
+                name: "Streisand (iOS) *",
+                url: "https://apps.apple.com/us/app/streisand/id6450534064"
+            },
+            {
+                icon: "bx bxl-android",
+                name: "V2rayNG (Android) *",
+                url: "https://play.google.com/store/apps/details?id=com.v2ray.ang"
+            },
+            {
+                icon: "bx bxl-windows",
+                name: "Hiddify ویندوز *",
+                url: "https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-Windows-Setup-x64.exe"
+            },
+            {
+                icon: "bx bxl-android",
+                name: "Hiddify اندروید",
+                url: "https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-Android-universal.apk"
+            },
+            {
+                icon: "bx bxl-apple",
+                name: "Hiddify اپل",
+                url: "https://apps.apple.com/us/app/hiddify-proxy-vpn/id6596777532"
+            },
+            {
+                icon: "bx bxl-android",
+                name: "Sing-Box اندروید",
+                url: "https://github.com/SagerNet/sing-box/releases/download/v1.11.6/SFA-1.11.6-universal.apk"
+            },
+            {
+                icon: "bx bxl-apple",
+                name: "Sing-Box اپل",
+                url: "https://apps.apple.com/us/app/sing-box-vt/id6673731168"
+            }
+        ]
+    };
+
+    // Apply configuration when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set site name
+        document.getElementById('siteName').textContent = config.siteName;
+
+        // Set logo
+        document.getElementById('logoImage').src = config.logoUrl;
+
+        // Set primary color
+        document.documentElement.style.setProperty('--primary', config.primaryColor);
+
+        // Set background image
+        document.body.style.setProperty('--before-background-image', `url('${config.backgroundImage}')`);
+
+        // Set navigation links
+        document.getElementById('supportLink').href = config.supportLink;
+        document.getElementById('shopLink').href = config.shopLink;
+
+        // Set welcome message
+        const welcomeAlert = document.getElementById('welcomeAlert');
+        if (config.welcomeMessage.enabled) {
+            welcomeAlert.innerHTML = `
+					<h4 class="alert-heading"><i class="bx bx-message"></i> ${config.welcomeMessage.title}</h4>
+					${config.welcomeMessage.content}
+				`;
+        } else {
+            welcomeAlert.style.display = 'none';
+        }
+
+        // Enable or disable additional links
+        const additionalLinks = document.getElementById('additionalLinks');
+        if (!config.additionalLinks.enabled) {
+            additionalLinks.style.display = 'none';
+        }
+
+        // Generate download links
+        const downloadLinksContainer = document.getElementById('downloadLinksContainer');
+        config.downloadLinks.forEach(link => {
+            const linkElement = document.createElement('div');
+            linkElement.className = 'list-group-item border-secondary bg-dark-subtle';
+            linkElement.innerHTML = `
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="d-flex align-items-center">
+							<i class='${link.icon} bx-border me-2'></i>
+							<span>${link.name}</span>
+						</div>
+						<a href="${link.url}" target="_blank" class="btn btn-sm btn-primary">
+							<i class='bx bx-download'></i> دانلود
+						</a>
+					</div>
+				`;
+            downloadLinksContainer.appendChild(linkElement);
+        });
+    });
+
+    function generateCurrentPageQR() {
+        document.getElementById('qrCodeContainer').innerHTML = '';
+
+        new QRCode(document.getElementById('qrCodeContainer'), {
+            text: window.location.href += ("#" + "{{ user.username }}"),
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    function copyLink(link, button) {
+        navigator.clipboard.writeText(link).then(() => {
+            button.textContent = 'کپی شد!';
+            setTimeout(() => {
+                button.innerHTML = '<i class="bx bx-copy"></i>';
+            }, 1500);
+        });
+    }
+
+    // Initialize QR code when modal is shown
+    const qrModal = document.getElementById('qrModal');
+    qrModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const link = button.getAttribute('data-link');
+        document.getElementById('qrCodeContainer').innerHTML = '';
+        new QRCode(document.getElementById('qrCodeContainer'), {
+            text: link,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    });
+
+    // Clear QR code when modal is hidden
+    qrModal.addEventListener('hidden.bs.modal', function () {
+        document.getElementById('qrCodeContainer').innerHTML = '';
+    });
+</script>
+</body>
+
+</html>
