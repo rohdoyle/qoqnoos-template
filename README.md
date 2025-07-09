@@ -35,7 +35,7 @@ Choose the version and run the corresponding command.
 
 **Marzneshin version:**
 ```
-sudo wget -O /var/lib/marzneshin/templates/subscription/index.html https://raw.githubusercontent.com/rezazoom/qoqnoos-template/main/index-marzneshin.html
+sudo wget -O /var/lib/marzneshin/templates/subscription/index.html https://raw.githubusercontent.com/rohdoyle/qoqnoos-template/refs/heads/main/index-marzneshin.html
 ```
 
 ### 2. Configure the subscription page path
