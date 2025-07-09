@@ -33,38 +33,28 @@ A beautiful RTL user panel template for Marzban/Marzneshin services with dynamic
 
 Choose the version and run the corresponding command.
 
-**Marzban version:**
-```
-sudo wget -O /var/lib/marzban/templates/subscription/index.html https://raw.githubusercontent.com/rezazoom/qoqnoos-template/main/index.html
-```
 **Marzneshin version:**
 ```
-sudo wget -O /var/lib/marzban/templates/subscription/index.html https://raw.githubusercontent.com/rezazoom/qoqnoos-template/main/index-marzneshin.html
+sudo wget -O /var/lib/marzneshin/templates/subscription/index.html https://raw.githubusercontent.com/rezazoom/qoqnoos-template/main/index-marzneshin.html
 ```
 
 ### 2. Configure the subscription page path
 
 **Automatically**
 
-Run these commands to set the path:
-```
-echo 'CUSTOM_TEMPLATES_DIRECTORY="/var/lib/marzban/templates/"' | sudo tee -a /opt/marzban/.env
-echo 'SUBSCRIPTION_PAGE_TEMPLATE="subscription/index.html"' | sudo tee -a /opt/marzban/.env
-```
-
 **Manually**
 
-Edit the Marzban `.env` file and add the following lines:
+Edit the marzneshin `.env` file and add the following lines:
 ```
-CUSTOM_TEMPLATES_DIRECTORY="/var/lib/marzban/templates/"
+CUSTOM_TEMPLATES_DIRECTORY="/var/lib/marzneshin/templates/"
 SUBSCRIPTION_PAGE_TEMPLATE="subscription/index.html"
 ```
 
-### 3. Restart Marzban
+### 3. Restart marzneshin
 
 Apply the changes by restarting Marzban:
 ```
-marzban restart
+marzneshin restart
 ```
 
 
